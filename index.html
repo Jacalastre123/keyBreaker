@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&family=SN+Pro:ital,wght@0,200..900;1,200..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <style>
+        #home {
+            background-color: rgb(10, 151, 0);
+            border: 1px solid black;
+            height: 100px;
+            width: 100px;
+            position: absolute;
+            top: 100px;
+            left: 300px;
+            z-index: 0;
+            box-shadow: 10px 5px 4px rgb(62, 62, 62);
+        }
+
+        #player {
+
+
+            height: 80px;
+            width: 80px;
+            background-size: 100%;
+            position: absolute;
+            top: 300px;
+            left: 600px;
+
+            z-index: 1;
+            transition: transform 0.1s;
+        }
+
+
+        body {
+            text-align: center;
+            z-index: 100;
+            background-image: url("Background.png");
+            transition: background-color 1s;
+            font-family: inter;
+            background-size: 100vh 100vw;
+          
+            margin: 0;
+          
+
+        }
+        * {
+            object-fit: border-box;
+        }
+
+        #sideMenu {
+            height: 100vh;
+            width: 30vh;
+            background-color: rgba(22, 98, 165, 0.582);
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-align: center;
+        }
+
+        h3 {
+          
+            margin-top: 1px;
+            margin-bottom: 2px;
+            width: 6vw;
+            text-align: center;
+            padding: 5px;
+            border: 5px solid rgb(59, 58, 58);
+            background-color: rgb(230, 230, 230);
+            font-size: 2.5em;
+            box-shadow: 2px 2px 5px;
+        }
+
+        .keys {
+            display: inline-flex;
+            margin: 5px;
+            gap: 5px;
+        }
+
+        button {
+            background-color: rgba(255, 255, 255, 0.543);
+            width: 80%;
+          
+        }
+
+        #upKey {
+            width: 80%;
+            margin: 2px;
+
+        }
+
+        #carImg {
+            background-position: 40px;
+            background-size: 5000%;
+            float: right;
+            position: relative;
+        }
+
+        #starter {
+            height: 160px;
+            font-size: 5em;
+        }
+
+        #timer {
+            font-size: 5em;
+            background-color: azure;
+            width: calc(100% - 10px);
+                        margin: 5px;
+
+            margin-top: 1px;
+
+        }
+
+        .blocking {
+            display: grid;
+            position: relative;
+
+
+            
+           justify-items: center;
+            align-items: center;
+            
+        }
+
+        
+    </style>
+
+    
+</head>
+
+<body>
+    <div id="sideMenu">
+        <h1>Keybreaker</h1>
+     
+       
+        <div class="blocking">
+            <div id="ups">
+           <h3 id="UpKey"> W</h3>
+           </div>
+           <div class="keys">
+             <h3 id="LeftKey">A</h3>
+              <h3 id="DownKey">S</h3>
+           
+            <h3 id="RigKey">D</h3>
+        </div>
+        </div>
+        <h2 id="timer">10s</h2>
+        <h2 id="scoreHold">Score: 0/50</h2>
+        <h2 id="highHold">High score: 0</h2>
+        <button onclick="carSprite(this);">Red Car</button>
+        <button onclick="carSprite(this)">Blue Car</button>
+        <button onclick="bgMStop(this)">Stop Music</button>
+    </div>
+    <div id="player"></div>
+    <dialog id="gameOver">
+        <h1>Game Over</h1>
+        <h4 id="scoreDial">Score: 0</h4>
+        <button onclick="window.location.reload()">Retry</button>
+         
+    </dialog>
+
+
+    <dialog id="size">
+        <h1>Sorry, please play in landscape mode</h1>
+        
+    </dialog>
+
+    <dialog id="YouWon">
+        <h1>You WON!</h1>
+        <p>Thank you for playing my game</p>
+        <h4 id="scoreRes">Score: 0 You didn't beat your high score.</h4><br>
+        <a href="mailto:wtran786@gmail.com">Tell me about your experience, I can respond!</a>
+        <button onclick="window.location.reload()">Play again</button>
+        <button onclick="mySpeech()">My Speech</button>
+    </dialog>
+    <dialog id="startDial">
+        <h1>Welcome to Keybreaker</h1>
+        <p>It is a simple game of being a car and drive towards a green box but over time, the key combinations goes from normal WASD to the obscure, there are 45 levels, lets see if you can do it. Don't forget that the rectangle secretly shrinks too!</p>
+        <button onclick="startGame()" id="starter">Start Playing!</button>
+<img height="160" width="80" src="carShot2.png" id="carImg">
+
+    </dialog>
+    <audio id="bgMus" src="background-mus.mp3" autoplay></audio>
+    <script>
+        const player = document.getElementById("player")
+        const UpKey = document.getElementById("UpKey")
+        const DownKey = document.getElementById("DownKey")
+        const RigKey = document.getElementById("RigKey")
+        const timer = document.getElementById("timer")
+        const startDial = document.getElementById("startDial")
+        const LeftKey = document.getElementById("LeftKey")
+        const scoreHold = document.getElementById("scoreHold")
+        const sideMenu = document.getElementById("sideMenu")
+          const youWon = document.getElementById("YouWon")
+        const size = document.getElementById("size")
+        const highHold = document.getElementById("highHold")
+        const gameOver = document.getElementById("gameOver")
+        const bgMus = document.getElementById("bgMus")
+        const scoreRes = youWon.querySelector("#scoreRes")
+        const scoreDial = gameOver.querySelector("#scoreDial")
+        const playStyle = window.getComputedStyle(player)
+     
+        let playTop = parseInt(playStyle.top)
+        let playLeft = parseInt(playStyle.left)
+        let canRight = true
+        let canLeft = true
+        let canTop = true
+        let canDown = true
+        let newTop = playTop
+        let newLeft = playLeft
+        let moved;
+        let animation;
+        let movement = 10
+        let choosing;
+        let time = 10
+        let eventos;
+        let heighto = 200
+        let widtho = 400
+        let levels = 0
+        let freeze = false
+        let upKey = "w"
+        let once = 0
+        let rightKey = "d"
+        let downKey = "s"
+        let frame = 0
+        let leftKey = "a"
+        let highScore = 0
+        let total = 14
+        let row = 0
+        let frameHeight = 80
+        let frameWidth = 80
+        let inter;
+         bgMus.volume = 0.2
+        console.log(heighto / (1.08 * 50), widtho / 50)
+        let gameRun = true
+        document.body.style.backgroundSize = window.screen.width + "px " + window.screen.height + "px"
+        const home = document.createElement("div")
+        startDial.showModal()
+        setInterval(function () {
+            if (window.innerHeight > window.innerWidth * 1.2) {
+                size.showModal()
+            }
+            else {
+                size.close()
+            }
+        })
+
+        function mySpeech() {
+            speechSynthesis.speak(new SpeechSynthesisUtterance("Thank you for playing my game, here is my totally cool sounding speech: ghfrbfhrbfwe vf ehof sdfdahdbsa oddosah dasjdhasbvjdhasb fhg rgbergrebgjrebchlvj vggffhv hnsfdvdsbcdsjcsjkcvkbdsbv sf vsfbvf vbkfdvrfuff34b8834r43 r834 9fghfrufhdsbfhfbdsofbaohfahfdbfurwg8034g07r gg 0g g0r 08 r237r 230fgefyegfewfewg fwui fgwiu fuiw gefifuyowf geou yfwygiuef gweoifg ewuif gewoyfg ewof gewof gwefuwgf gewo fgdshjv bmcxvxbcvxcjvxzvbzv vx cn bvcnmvzc uytfruwfghkwfugwvfwu ifw fggf fre gyfufyuf gfigwy. Wow, you have been with me this whole time! Thanks for that!"))
+        }
+        function carSprite(button) {
+            let carName = button.innerText.split(" ")[0]
+            player.style.backgroundImage = "url('CarSprite" + carName + ".png')"
+        }
+
+
+        player.style.backgroundImage = "url('CarSpriteBlue.png')"
+
+
+        function bgMStop(button){
+            bgMus.pause()
+            button.innerText = "Start Music"
+            button.onclick = function() {
+                bgMus.play() 
+                button.innerText = "Stop Music"
+                button.onclick = function() {
+                    bgMStop(this)
+                 
+                }
+            }
+        }
+        function homeMaker() {
+
+            home.id = "home"
+            home.style.height = heighto + "px"
+            home.style.width = widtho + "px"
+            document.body.appendChild(home)
+
+
+        }
+        function startGame() {
+            startDial.close()
+        let interVal = setInterval(function () {
+            if (levels === 1) {
+                upKey = "t"
+                rightKey = "h"
+                downKey = "g"
+                leftKey = "f"
+
+
+            }
+
+            if (levels === 8) {
+
+                upKey = "1"
+                rightKey = "2"
+                downKey = "3"
+                leftKey = "4"
+            }
+
+            if (levels === 15) {
+                upKey = "p"
+                rightKey = "q"
+                downKey = "a"
+                leftKey = "l"
+
+            }
+
+            if (levels === 20) {
+                upKey = "["
+                rightKey = "]"
+                downKey = ";"
+                leftKey = "'"
+
+            }
+
+
+            if (levels === 30) {
+             
+                upKey = "z"
+                rightKey = "g"
+                downKey = "y"
+                leftKey = "a"
+
+            }
+
+            if (levels === 40) {
+                upKey = "-"
+                rightKey = "_"
+                downKey = "+"
+                leftKey = "="
+
+            }
+
+            if (levels === 45) {
+                upKey = "a"
+                rightKey = "|"
+                downKey = "q"
+                leftKey = "]"
+
+
+            }
+
+               if (levels === 48) {
+                upKey = "Space"
+                rightKey = "m"
+                downKey = "z"
+                leftKey = "b"
+
+
+            }
+
+                if (levels === 50) {
+                    
+                    if (once < 1) {
+                console.log("You Won!")
+                speechSynthesis.speak(new SpeechSynthesisUtterance("You WON!"))
+                youWon.showModal()
+                scoreRes.innerText = "Score: " + levels + "/50 " + levels > highScore ? "You Beaten You High Score!": "You didn't beat your high score."
+                    }
+                    clearInterval(interVal)
+                    once++
+            }
+            UpKey.innerText = upKey.toUpperCase()
+            DownKey.innerText = downKey.toUpperCase()
+            LeftKey.innerText = leftKey.toUpperCase()
+            RigKey.innerText = rightKey.toUpperCase()
+
+            
+            highHold.innerText = "High score: " + highScore
+
+            if (time === 0) {
+                if (levels > highScore) {
+                    highScore = levels + 1
+                    localStorage.setItem("highScore", highScore)
+                }
+                document.body.style.backgroundImage = "url('FlameGround.png')"
+                setTimeout(function () {
+                    document.body.style.backgroundImage = "url('Background.png')"
+                }, 2000)
+                if (collision(player.getBoundingClientRect(), home.getBoundingClientRect())) {
+
+                    levels += 1
+
+
+                    home.remove()
+                    heighto /= 1.08
+                    widtho /= 1.08
+                    home.style.backgroundColor = "rgb(10, 151, 0)"
+                    freeze = true
+                    time = 12
+                    setTimeout(function () {
+                        home.style.top = Math.random() * window.innerHeight - 100 + "px"
+                        home.style.left = (Math.random() * window.innerWidth - sideMenu.offSetWidth) + sideMenu.offsetWidth + "px"
+                        freeze = false
+                    }, 2000)
+
+                }
+
+
+
+
+                else {
+                    gameOver.showModal()
+                    scoreDial.innerText = "Score: " + levels + "/50"
+                    clearInterval(interVal)
+                    document.removeEventListener(eventos, keys)
+                    player.style.backgroundImage = "url('ExplosionSprite.png')"
+                    inter = setInterval(function() {
+                            frame = (frame + 1) % 12
+
+            player.style.backgroundPosition = "0px -" + frame * frameWidth + "px"
+                    }, 50)
+                 
+                }
+            }
+
+            if (time === 8) {
+
+            }
+
+            time--
+            homeMaker()
+            console.log(time)
+            timer.innerHTML = time + "s"
+            scoreHold.innerText = "Score: " + levels + "/50"
+
+
+        }, 1000)
+
+       
+        function turnLeft() {
+
+
+            playLeft -= movement
+            player.style.left = playLeft + "px"
+            move = "left"
+
+
+
+
+
+
+        }
+
+        function turnRight() {
+
+
+
+
+
+
+            playLeft += movement
+            player.style.left = playLeft + "px"
+
+
+
+        }
+
+        function turnUp() {
+
+
+            playTop -= movement
+            player.style.top = playTop + "px"
+
+
+        }
+
+        function turnDown() {
+
+
+
+            playTop += movement
+            player.style.top = playTop + "px"
+
+
+
+
+        }
+
+
+        function keys(event) {
+            if (!freeze) {
+            if (event.key === upKey && playTop > 0) {
+                turnUp()
+                player.style.transform = "rotate(0deg)"
+            }
+
+            if (event.key === rightKey && playLeft < window.innerWidth - player.offsetHeight) {
+                turnRight()
+                player.style.transform = "rotate(90deg)"
+            }
+
+            if (event.key === downKey && playTop < window.innerHeight - player.offsetHeight) {
+                turnDown()
+                player.style.transform = "rotate(180deg)"
+            }
+
+            if (event.key === leftKey && playLeft > sideMenu.offsetWidth) {
+                turnLeft()
+                player.style.transform = "rotate(270deg)"
+            }
+        }
+            bgMus.loop = true
+            frame = (frame + 1) % total
+
+            player.style.backgroundPosition = "0px -" + frame * frameWidth + "px"
+
+
+
+            if (collision(player.getBoundingClientRect(), home.getBoundingClientRect())) {
+                console.log("Collided")
+
+                home.style.backgroundColor = "lime"
+            }
+            else {
+                home.style.backgroundColor = "rgb(10, 151, 0)"
+            }
+
+
+        }
+        eventos = document.addEventListener("keydown", keys)
+
+
+        function collision(rect1, rect2) {
+            return rect1.x < rect2.x + rect2.width && rect1.x + rect1.width > rect2.x && rect1.y < rect2.y + rect2.height && rect1.y + rect1.height > rect2.y
+        }
+
+    }
+
+
+
+
+    </script>
+
+</body>
+
+</html>
