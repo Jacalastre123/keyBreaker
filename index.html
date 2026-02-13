@@ -86,7 +86,8 @@
         button {
             background-color: rgba(255, 255, 255, 0.543);
             width: 80%;
-          
+              padding: 5px;
+            
         }
 
         #upKey {
@@ -141,7 +142,7 @@
        
         <div class="blocking">
             <div id="ups">
-           <h3 id="UpKey"> W</h3>
+           <h3 id="UpKey">W</h3>
            </div>
            <div class="keys">
              <h3 id="LeftKey">A</h3>
@@ -153,7 +154,11 @@
         <h2 id="timer">10s</h2>
         <h2 id="scoreHold">Score: 0/50</h2>
         <h2 id="highHold">High score: 0</h2>
-        <button onclick="carSprite(this);">Red Car</button>
+        <form>
+            <label for="kindleType">For the Kindle:</label><br>
+                <input type="text" id="kindleType">
+        </form>
+        <button onclick="carSprite(this)">Red Car</button>
         <button onclick="carSprite(this)">Blue Car</button>
         <button onclick="bgMStop(this)">Stop Music</button>
     </div>
@@ -236,12 +241,18 @@
         let frameHeight = 80
         let frameWidth = 80
         let inter;
+        let isKindle = false
          bgMus.volume = 0.2
-        console.log(heighto / (1.08 * 50), widtho / 50)
+       
         let gameRun = true
         document.body.style.backgroundSize = window.screen.width + "px " + window.screen.height + "px"
         const home = document.createElement("div")
         startDial.showModal()
+           if (ua.includes("kindle")) {
+                        player.style.top = "200px"
+                        isKindle = true
+                           
+            }
         setInterval(function () {
             if (window.innerHeight > window.innerWidth * 1.2) {
                 size.showModal()
@@ -338,11 +349,20 @@
 
             }
 
-            if (levels === 45) {
+            if (levels === 45 && !isKindle) {
                 upKey = "a"
                 rightKey = "|"
                 downKey = "q"
                 leftKey = "]"
+
+
+            }
+
+            if (levels === 45 && isKindle) {
+                upKey = "a"
+                rightKey = "g"
+                downKey = "q"
+                leftKey = "h"
 
 
             }
@@ -359,7 +379,7 @@
                 if (levels === 50) {
                     
                     if (once < 1) {
-                console.log("You Won!")
+
                 speechSynthesis.speak(new SpeechSynthesisUtterance("You WON!"))
                 youWon.showModal()
                 scoreRes.innerText = "Score: " + levels + "/50 " + levels > highScore ? "You Beaten You High Score!": "You didn't beat your high score."
@@ -396,9 +416,19 @@
                     freeze = true
                     time = 12
                     setTimeout(function () {
-                        home.style.top = Math.random() * window.innerHeight - 100 + "px"
-                        home.style.left = (Math.random() * window.innerWidth - sideMenu.offSetWidth) + sideMenu.offsetWidth + "px"
+                        if (ua.includes("kindle")) {
+                        home.style.top = Math.random() * window.innerHeight / 2 + "px"
+                        
+                        }
+
+                        else {
+                             home.style.top = Math.random() * window.innerHeight + "px"
+                        }
+
+                         home.style.left = (Math.random() * window.innerWidth - sideMenu.offSetWidth) + sideMenu.offsetWidth + "px"
+
                         freeze = false
+                        
                     }, 2000)
 
                 }
@@ -427,7 +457,7 @@
 
             time--
             homeMaker()
-            console.log(time)
+            
             timer.innerHTML = time + "s"
             scoreHold.innerText = "Score: " + levels + "/50"
 
@@ -515,7 +545,7 @@
 
 
             if (collision(player.getBoundingClientRect(), home.getBoundingClientRect())) {
-                console.log("Collided")
+                
 
                 home.style.backgroundColor = "lime"
             }
