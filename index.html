@@ -254,7 +254,7 @@
                         isKindle = true
                            
             }
-        setInterval(function () {
+        setInterval(function() {
             if (window.innerHeight > window.innerWidth * 1.2) {
                 size.showModal()
             }
@@ -419,14 +419,16 @@
                     setTimeout(function () {
                         if (ua.includes("kindle")) {
                         home.style.top = Math.random() * window.innerHeight / 2 + "px"
+                             home.style.left = (Math.random() * window.innerWidth - sideMenu.offSetWidth) + sideMenu.offsetWidth + "px"
                         
                         }
 
                         else {
                              home.style.top = Math.random() * window.innerHeight + "px"
+                             home.style.left = (Math.random() * window.innerWidth - sideMenu.offSetWidth) + sideMenu.offsetWidth + "px"
                         }
 
-                         home.style.left = (Math.random() * window.innerWidth - sideMenu.offSetWidth) + sideMenu.offsetWidth + "px"
+                        
 
                         freeze = false
                         
