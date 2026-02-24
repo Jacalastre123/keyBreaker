@@ -350,6 +350,14 @@
 
             }
 
+               if (levels === 42) {
+                upKey = "l"
+                rightKey = "-"
+                downKey = "a"
+                leftKey = "!"
+
+            }
+
             if (levels === 45 && !isKindle) {
                 upKey = "a"
                 rightKey = "|"
@@ -419,13 +427,13 @@
                     setTimeout(function () {
                         if (ua.includes("kindle")) {
                         home.style.top = Math.random() * window.innerHeight / 2 + "px"
-                             home.style.left = (Math.random() * window.innerWidth - sideMenu.offSetWidth) + sideMenu.offsetWidth + "px"
+                             home.style.left = (Math.random() * window.innerWidth - sideMenu.offsetWidth) + sideMenu.offsetWidth + "px"
                         
                         }
 
                         else {
                              home.style.top = Math.random() * window.innerHeight + "px"
-                             home.style.left = (Math.random() * window.innerWidth - sideMenu.offSetWidth) + sideMenu.offsetWidth + "px"
+                             home.style.left = (Math.random() * window.innerWidth - sideMenu.offsetWidth) + sideMenu.offsetWidth + "px"
                         }
 
                         
