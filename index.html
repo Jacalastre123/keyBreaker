@@ -73,7 +73,7 @@
             padding: 5px;
             border: 5px solid rgb(59, 58, 58);
             background-color: rgb(230, 230, 230);
-            font-size: 2.5em;
+            font-size: 1.6em;
             box-shadow: 2px 2px 5px;
         }
 
@@ -173,7 +173,7 @@
 
     <dialog id="size">
         <h1>Sorry, please play in landscape mode</h1>
-        
+        <h5>By Jacalastre123 <b>KeyBreaker</b></h5>
     </dialog>
 
     <dialog id="YouWon">
@@ -186,7 +186,7 @@
     </dialog>
     <dialog id="startDial">
         <h1>Welcome to Keybreaker</h1>
-        <p>It is a simple game of being a car and drive towards a green box but over time, the key combinations goes from normal WASD to the obscure, there are 45 levels, lets see if you can do it. Don't forget that the rectangle secretly shrinks too!</p>
+        <p id="read">It is a simple game of being a car and drive towards a green box but over time, the key combinations goes from normal WASD to the obscure, there are 45 levels, lets see if you can do it. Don't forget that the rectangle secretly shrinks too!</p>
         <button onclick="startGame()" id="starter">Start Playing!</button>
 <img height="160" width="80" src="carShot2.png" id="carImg">
 
@@ -204,6 +204,7 @@
         const sideMenu = document.getElementById("sideMenu")
           const youWon = document.getElementById("YouWon")
         const size = document.getElementById("size")
+        const read = document.getElementById("read")
         const highHold = document.getElementById("highHold")
         const gameOver = document.getElementById("gameOver")
         const bgMus = document.getElementById("bgMus")
@@ -262,7 +263,9 @@
                 size.close()
             }
         })
-
+            function voiceOver() {
+                speechSynthesis.speak(new SpeechSynthesisUtterane("KeyBreaker: " + read.innerText))
+            }
         function mySpeech() {
             speechSynthesis.speak(new SpeechSynthesisUtterance("Thank you for playing my game, here is my totally cool sounding speech: ghfrbfhrbfwe vf ehof sdfdahdbsa oddosah dasjdhasbvjdhasb fhg rgbergrebgjrebchlvj vggffhv hnsfdvdsbcdsjcsjkcvkbdsbv sf vsfbvf vbkfdvrfuff34b8834r43 r834 9fghfrufhdsbfhfbdsofbaohfahfdbfurwg8034g07r gg 0g g0r 08 r237r 230fgefyegfewfewg fwui fgwiu fuiw gefifuyowf geou yfwygiuef gweoifg ewuif gewoyfg ewof gewof gwefuwgf gewo fgdshjv bmcxvxbcvxcjvxzvbzv vx cn bvcnmvzc uytfruwfghkwfugwvfwu ifw fggf fre gyfufyuf gfigwy. Wow, you have been with me this whole time! Thanks for that!"))
         }
