@@ -129,8 +129,11 @@
             
         }
 
-        
+        .fullPercent {
+            width: 100%;
+        }
     </style>
+    
 
     
 </head>
@@ -167,7 +170,7 @@
         <h1>Game Over</h1>
         <h4 id="scoreDial">Score: 0</h4>
         <button onclick="window.location.reload()">Retry</button>
-         
+        
     </dialog>
 
 
@@ -188,6 +191,7 @@
         <h1>Welcome to Keybreaker</h1>
         <p id="read">It is a simple game of being a car and drive towards a green box but over time, the key combinations goes from normal WASD to the obscure, there are 45 levels, lets see if you can do it. Don't forget that the rectangle secretly shrinks too!</p>
         <button onclick="startGame()" id="starter">Start Playing!</button>
+        <button onclick=VoiceOver()" class="fullPercent">Read Aloud</button>
 <img height="160" width="80" src="carShot2.png" id="carImg">
 
     </dialog>
@@ -263,7 +267,7 @@
                 size.close()
             }
         })
-            function voiceOver() {
+            function VoiceOver() {
                 speechSynthesis.speak(new SpeechSynthesisUtterane("KeyBreaker: " + read.innerText))
             }
         function mySpeech() {
